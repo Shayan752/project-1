@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درباره ما | آژانس یکان وب</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Vazirmatn Font CDN -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#4B9DA9',
+                            dark: '#3a7a83',
+                        },
+                        secondary: {
+                            DEFAULT: '#91C6BC',
+                            dark: '#76a89f',
+                        },
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b'
+                    },
+                    fontFamily: {
+                        vazir: ['Vazirmatn', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        blob: {
+                            "0%": { transform: "translate(0px, 0px) scale(1)" },
+                            "33%": { transform: "translate(30px, -50px) scale(1.1)" },
+                            "66%": { transform: "translate(-20px, 20px) scale(0.9)" },
+                            "100%": { transform: "translate(0px, 0px) scale(1)" },
+                        },
+                    }
+                }
+            }
+        }
+
+        function themeManager() {
+            return {
+                darkMode: localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
+                mobileMenuOpen: false,
+                init() {
+                    if (this.darkMode) {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
+                    this.initScrollReveal();
+                },
+                toggleTheme() {
+                    this.darkMode = !this.darkMode;
+                    if (this.darkMode) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                    }
+                },
+                initScrollReveal() {
+                    const observerOptions = { threshold: 0.1 };
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('active');
+                            }
+                        });
+                    }, observerOptions);
+                    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+                }
+            }
+        }
+    </script>
+    
+    <!-- Alpine.js -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; }
+        .glass-header { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); }
+        .dark .glass-header { background: rgba(15, 23, 42, 0.85); }
+        
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-left { opacity: 0; transform: translateX(50px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal-left.active { opacity: 1; transform: translateX(0); }
+        .reveal-right { opacity: 0; transform: translateX(-50px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal-right.active { opacity: 1; transform: translateX(0); }
+        
+        .shape-blob { height: 400px; width: 400px; filter: blur(80px); opacity: 0.2; border-radius: 50%; position: absolute; z-index: -1; }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #4B9DA9; border-radius: 10px; }
+    </style>
+</head>
+<body x-data="themeManager()" :class="darkMode ? 'dark' : ''" class="bg-slate-50 dark:bg-darkBg text-slate-800 dark:text-slate-200 transition-colors duration-500 overflow-x-hidden">
+
+    <!-- Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-header border-b border-slate-200 dark:border-slate-800">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden text-slate-600 dark:text-slate-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                </button>
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/30 group-hover:rotate-12 transition-transform duration-300">
+                        <span class="text-lg font-black">YW</span>
+                    </div>
+                    <span class="text-xl font-black tracking-tight dark:text-white">یکان وب</span>
+                </a>
+            </div>
+
+            <nav class="hidden lg:flex items-center gap-10">
+                <a href="index.html" class="hover:text-primary transition font-bold text-sm">خانه</a>
+                <a href="services.html" class="hover:text-primary transition font-bold text-sm">خدمات</a>
+                <a href="index.html#portfolio" class="hover:text-primary transition font-bold text-sm">نمونه‌کارها</a>
+                <a href="blog-list.html" class="hover:text-primary transition font-bold text-sm">وبلاگ</a>
+                <a href="about.html" class="text-primary transition font-black text-sm border-b-2 border-primary pb-1">درباره ما</a>
+                <a href="contact.html" class="hover:text-primary transition font-bold text-sm">تماس</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button @click="toggleTheme()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shadow-inner hover:scale-110 transition">
+                    <template x-if="!darkMode"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg></template>
+                    <template x-if="darkMode"><svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m3.343-5.657l-.707.707m12.728 12.728l-.707.707M6.343 17.657l-.707-.707M17.657 6.343l-.707-.707M12 7a5 5 0 100 10 5 5 0 000-10z" /></svg></template>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenuOpen" x-transition class="lg:hidden bg-white dark:bg-darkCard p-8 border-b border-gray-100 dark:border-slate-800 font-bold space-y-6 shadow-2xl">
+            <a href="index.html" class="block border-b border-slate-100 dark:border-slate-800 pb-2">خانه</a>
+            <a href="services.html" class="block border-b border-slate-100 dark:border-slate-800 pb-2">خدمات</a>
+            <a href="about.html" class="block text-primary">درباره ما</a>
+            <a href="contact.html" class="block">تماس با ما</a>
+        </div>
+    </header>
+
+    <main class="pt-32 relative overflow-hidden">
+        <!-- Decoration Shapes -->
+        <div class="shape-blob bg-primary top-40 right-[-10%] animate-blob"></div>
+        <div class="shape-blob bg-secondary bottom-40 left-[-10%] animate-blob" style="animation-delay: 2s"></div>
+
+        <!-- Hero Section -->
+        <section class="py-20 px-6">
+            <div class="container mx-auto text-center reveal active">
+                <h1 class="text-5xl lg:text-8xl font-black mb-8 leading-tight dark:text-white">آژانس دیجیتال <br/> <span class="text-primary italic">یکان وب</span></h1>
+                <p class="text-xl text-slate-500 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-medium">ما تیمی از متخصصان خلاق، توسعه‌دهندگان و استراتژیست‌های دیجیتال هستیم که با هدف خلق تجربه‌های بی‌نظیر وب، در کنار شما ایستاده‌ایم.</p>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-16 bg-white/50 dark:bg-darkCard/30 backdrop-blur-sm border-y border-slate-200 dark:border-slate-800 reveal">
+            <div class="container mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-12 text-center">
+                <div>
+                    <div class="text-4xl lg:text-6xl font-black text-primary mb-2">+۱۵۰</div>
+                    <div class="text-sm font-bold opacity-60">پروژه موفق</div>
+                </div>
+                <div>
+                    <div class="text-4xl lg:text-6xl font-black text-primary mb-2">+۴۰</div>
+                    <div class="text-sm font-bold opacity-60">مشتری وفادار</div>
+                </div>
+                <div>
+                    <div class="text-4xl lg:text-6xl font-black text-primary mb-2">+۸</div>
+                    <div class="text-sm font-bold opacity-60">سال تجربه</div>
+                </div>
+                <div>
+                    <div class="text-4xl lg:text-6xl font-black text-primary mb-2">۱۰۰٪</div>
+                    <div class="text-sm font-bold opacity-60">رضایت فنی</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Story -->
+        <section class="py-32 px-6">
+            <div class="container mx-auto flex flex-col lg:flex-row items-center gap-20">
+                <div class="flex-1 reveal-left">
+                    <h2 class="text-4xl font-black mb-8 border-r-8 border-primary pr-6">داستان ما از کجا شروع شد؟</h2>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-lg mb-6">
+                        یکان وب در سال ۱۳۹۵ با یک تیم سه نفره و رویای تغییر استانداردهای طراحی وب در ایران متولد شد. ما معتقد بودیم که وب‌سایت‌ها نباید فقط زیبا باشند، بلکه باید به عنوان یک موتور پولساز برای کسب‌وکارها عمل کنند.
+                    </p>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-lg">
+                        امروز، پس از گذشت چندین سال و انجام ده‌ها پروژه بین‌المللی و داخلی، ما با استفاده از تکنولوژی‌های روز دنیا مانند React، هوش مصنوعی و اتوماسیون‌های هوشمند، همراه شما در مسیر تحول دیجیتال هستیم.
+                    </p>
+                </div>
+                <div class="flex-1 reveal relative">
+                    <img src="https://picsum.photos/seed/story/800/600" alt="داستان یکان وب" class="rounded-[4rem] shadow-2xl border-4 border-white dark:border-slate-800 animate-float">
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Values -->
+        <section class="py-24 px-6 bg-slate-100 dark:bg-darkCard/20 backdrop-blur-md">
+            <div class="container mx-auto">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl lg:text-5xl font-black mb-4">ارزش‌های <span class="text-primary">بنیادین</span> ما</h2>
+                    <p class="text-slate-500">آنچه ما را در مسیرمان ثابت‌قدم نگه می‌دارد</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="p-10 bg-white dark:bg-darkCard rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800 transition hover:scale-105 reveal">
+                        <div class="text-4xl mb-6">💎</div>
+                        <h4 class="text-2xl font-black mb-4">کیفیت بی‌قید و شرط</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed">ما معتقدیم جزئیات تفاوت‌ها را می‌سازند. از کوچکترین خط کد تا بزرگترین المان گرافیکی، همه باید در بالاترین سطح باشند.</p>
+                    </div>
+                    <div class="p-10 bg-white dark:bg-darkCard rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800 transition hover:scale-105 reveal" style="transition-delay: 150ms">
+                        <div class="text-4xl mb-6">💡</div>
+                        <h4 class="text-2xl font-black mb-4">نوآوری مستمر</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed">دنیای وب هر روز در حال تغییر است. ما همیشه با جدیدترین فریم‌ورک‌ها و تکنولوژی‌های هوش مصنوعی به‌روز می‌مانیم.</p>
+                    </div>
+                    <div class="p-10 bg-white dark:bg-darkCard rounded-[3rem] shadow-xl border border-slate-100 dark:border-slate-800 transition hover:scale-105 reveal" style="transition-delay: 300ms">
+                        <div class="text-4xl mb-6">🤝</div>
+                        <h4 class="text-2xl font-black mb-4">تعهد و شفافیت</h4>
+                        <p class="text-slate-500 text-sm leading-relaxed">ما فراتر از یک پیمانکار، به عنوان شریک تجاری در کنار شما هستیم و در تمامی مراحل پروژه، شفافیت کامل را اولویت قرار می‌دهیم.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Team Section -->
+        <section class="py-32 px-6">
+            <div class="container mx-auto">
+                <div class="text-center mb-20 reveal">
+                    <h2 class="text-4xl font-black mb-4">متخصصین <span class="text-primary">یکان وب</span></h2>
+                    <p class="text-slate-500">قلب تپنده آژانس ما، تیمی از بااستعدادترین‌ها</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                    <!-- Member 1 -->
+                    <div class="group text-center reveal">
+                        <div class="relative mb-6 overflow-hidden rounded-[2.5rem] shadow-2xl">
+                            <img src="https://picsum.photos/seed/m1/400/500" class="w-full grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="Team Member">
+                            <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        </div>
+                        <h4 class="text-xl font-black dark:text-white">امیر یوسفی</h4>
+                        <p class="text-primary text-sm font-bold mb-4 italic">بنیان‌گذار و مدیر استراتژی</p>
+                    </div>
+                    <!-- Member 2 -->
+                    <div class="group text-center reveal" style="transition-delay: 100ms">
+                        <div class="relative mb-6 overflow-hidden rounded-[2.5rem] shadow-2xl">
+                            <img src="https://picsum.photos/seed/m2/400/500" class="w-full grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="Team Member">
+                            <div class="absolute inset-0 bg-secondary/20 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        </div>
+                        <h4 class="text-xl font-black dark:text-white">سارا راد</h4>
+                        <p class="text-primary text-sm font-bold mb-4 italic">مدیر هنری و طراح UI/UX</p>
+                    </div>
+                    <!-- Member 3 -->
+                    <div class="group text-center reveal" style="transition-delay: 200ms">
+                        <div class="relative mb-6 overflow-hidden rounded-[2.5rem] shadow-2xl">
+                            <img src="https://picsum.photos/seed/m3/400/500" class="w-full grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="Team Member">
+                            <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        </div>
+                        <h4 class="text-xl font-black dark:text-white">رضا احمدی</h4>
+                        <p class="text-primary text-sm font-bold mb-4 italic">توسعه‌دهنده ارشد Full-Stack</p>
+                    </div>
+                    <!-- Member 4 -->
+                    <div class="group text-center reveal" style="transition-delay: 300ms">
+                        <div class="relative mb-6 overflow-hidden rounded-[2.5rem] shadow-2xl">
+                            <img src="https://picsum.photos/seed/m4/400/500" class="w-full grayscale group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100" alt="Team Member">
+                            <div class="absolute inset-0 bg-secondary/20 opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                        </div>
+                        <h4 class="text-xl font-black dark:text-white">مریم حسینی</h4>
+                        <p class="text-primary text-sm font-bold mb-4 italic">متخصص سئو و داده‌کاوی</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-24 px-6">
+            <div class="container mx-auto">
+                <div class="bg-primary/10 dark:bg-darkCard p-12 lg:p-24 rounded-[4rem] text-center border-2 border-dashed border-primary reveal">
+                    <h2 class="text-3xl lg:text-5xl font-black mb-8">علاقه‌مند به همکاری با ما هستید؟</h2>
+                    <p class="text-xl opacity-70 mb-12 max-w-2xl mx-auto leading-relaxed">ما همیشه به دنبال چالش‌های جدید و پروژه‌های خلاقانه هستیم. بیایید با هم دنیای دیجیتال را زیباتر کنیم.</p>
+                    <a href="contact.html" class="inline-block px-12 py-5 bg-primary text-white rounded-full font-black text-xl hover:scale-110 transition shadow-2xl shadow-primary/40">همین حالا پیام دهید</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 pt-24 pb-12 border-t border-slate-800">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 mb-20 text-right">
+            <div class="space-y-8">
+                <div class="text-3xl font-black text-white">یکان وب</div>
+                <p class="text-sm leading-relaxed font-medium">آژانس خلاق یکان وب، پیشرو در ارائه راهکارهای نوین طراحی وب، سئو و هوش مصنوعی با استانداردهای جهانی در ایران.</p>
+            </div>
+            <div>
+                <h4 class="font-black text-xl mb-10 text-white">دسترسی سریع</h4>
+                <ul class="space-y-4 text-sm font-bold">
+                    <li><a href="index.html" class="hover:text-primary transition">صفحه اصلی</a></li>
+                    <li><a href="services.html" class="hover:text-primary transition">خدمات ما</a></li>
+                    <li><a href="blog-list.html" class="hover:text-primary transition">وبلاگ آموزشی</a></li>
+                    <li><a href="about.html" class="text-primary transition">درباره ما</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-black text-xl mb-10 text-white">خدمات تخصصی</h4>
+                <ul class="space-y-4 text-sm font-medium">
+                    <li>طراحی سایت اختصاصی</li>
+                    <li>توسعه وردپرس بیزینس</li>
+                    <li>سئو و بهبود رتبه گوگل</li>
+                    <li>هوش مصنوعی n8n</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-black text-xl mb-10 text-white">ارتباط با ما</h4>
+                <ul class="space-y-6 text-sm font-medium">
+                    <li class="flex items-center gap-4">📍 تهران، میدان ونک، ملاصدرا</li>
+                    <li class="flex items-center gap-4 text-ltr font-black text-white">📞 ۰۲۱-۸۸۰۰۰۰۰۰</li>
+                    <li class="flex items-center gap-4">✉️ info@yekanweb.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center text-[10px] text-slate-600 font-bold border-t border-slate-800 pt-12">
+            &copy; تمامی حقوق مادی و معنوی این وب‌سایت متعلق به آژانس «یکان وب» است. طراحی با ❤️ در تیم فنی یکان وب.
+        </div>
+    </footer>
+
+</body>
+</html>

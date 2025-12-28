@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تکنیک‌های بهینه‌سازی سرعت سایت | وبلاگ یکان وب</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Vazirmatn Font CDN -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#4B9DA9',
+                            dark: '#3a7a83',
+                        },
+                        secondary: {
+                            DEFAULT: '#91C6BC',
+                            dark: '#76a89f',
+                        },
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b'
+                    },
+                    fontFamily: {
+                        vazir: ['Vazirmatn', 'sans-serif'],
+                    }
+                }
+            }
+        }
+
+        function themeManager() {
+            return {
+                darkMode: localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
+                mobileMenuOpen: false,
+                init() {
+                    if (this.darkMode) {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
+                },
+                toggleTheme() {
+                    this.darkMode = !this.darkMode;
+                    if (this.darkMode) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; }
+        .glass-header { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); }
+        .dark .glass-header { background: rgba(15, 23, 42, 0.85); }
+        .prose img { border-radius: 1.5rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .prose blockquote { border-right: 4px solid #4B9DA9; border-left: none; padding-right: 1.5rem; font-style: italic; color: #4B9DA9; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #4B9DA9; border-radius: 10px; }
+    </style>
+</head>
+<body x-data="themeManager()" :class="darkMode ? 'dark' : ''" class="bg-slate-50 dark:bg-darkBg text-slate-800 dark:text-slate-200 transition-colors duration-500 overflow-x-hidden">
+
+    <!-- Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-header border-b border-slate-200 dark:border-slate-800">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-6">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden text-slate-600 dark:text-slate-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                </button>
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg">
+                        <span class="text-lg font-black">YW</span>
+                    </div>
+                    <span class="text-xl font-black tracking-tight dark:text-white">یکان وب</span>
+                </a>
+            </div>
+
+            <nav class="hidden lg:flex items-center gap-8">
+                <a href="index.html" class="hover:text-primary transition font-bold text-sm">خانه</a>
+                <a href="services.html" class="hover:text-primary transition font-bold text-sm">خدمات</a>
+                <a href="index.html#portfolio" class="hover:text-primary transition font-bold text-sm">نمونه‌کارها</a>
+                <a href="index.html#blog" class="text-primary transition font-black text-sm">وبلاگ</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button @click="toggleTheme()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shadow-inner">
+                    <template x-if="!darkMode"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg></template>
+                    <template x-if="darkMode"><svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m3.343-5.657l-.707.707m12.728 12.728l-.707.707M6.343 17.657l-.707-.707M17.657 6.343l-.707-.707M12 7a5 5 0 100 10 5 5 0 000-10z" /></svg></template>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-24">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row gap-12">
+                
+                <!-- Content Section -->
+                <div class="lg:w-2/3">
+                    <!-- Post Header -->
+                    <div class="mb-10">
+                        <div class="flex items-center gap-3 text-sm text-primary font-bold mb-4">
+                            <span class="px-3 py-1 bg-primary/10 rounded-full">تکنولوژی</span>
+                            <span>•</span>
+                            <span class="text-slate-500">۱۴ دی ۱۴۰۲</span>
+                        </div>
+                        <h1 class="text-3xl lg:text-5xl font-black leading-tight dark:text-white mb-6">چگونه سرعت لود سایت وردپرسی را به زیر یک ثانیه برسانیم؟</h1>
+                        <div class="flex items-center gap-4 py-6 border-y border-slate-200 dark:border-slate-800">
+                            <img src="https://picsum.photos/seed/avatar/100/100" class="w-12 h-12 rounded-full border-2 border-primary" alt="نویسنده">
+                            <div>
+                                <div class="font-bold">رضا احمدی</div>
+                                <div class="text-xs text-slate-500">مدیر فنی یکان وب</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Post Body -->
+                    <article class="prose prose-lg dark:prose-invert max-w-none mb-16 leading-relaxed text-slate-700 dark:text-slate-300">
+                        <p>امروزه سرعت لود وب‌سایت یکی از حیاتی‌ترین فاکتورها برای تجربه کاربری و سئو (SEO) محسوب می‌شود. طبق آمارهای گوگل، اگر لود یک سایت بیش از ۳ ثانیه طول بکشد، بیش از ۵۰ درصد کاربران آن را ترک می‌کنند. در این نوشته قصد داریم به بررسی راهکارهای عملی برای بهینه‌سازی سرعت وردپرس بپردازیم.</p>
+                        
+                        <img src="https://picsum.photos/seed/speed/1200/600" class="w-full my-10" alt="بهینه‌سازی سرعت سایت">
+
+                        <h2 class="text-2xl font-black dark:text-white mt-10 mb-4">۱. انتخاب هاستینگ مناسب</h2>
+                        <p>اولین و مهم‌ترین قدم، استفاده از یک سرویس میزبانی ابری (Cloud Hosting) با کیفیت است. هاست‌های اشتراکی ارزان‌قیمت معمولاً منابع محدودی دارند و نمی‌توانند پاسخگوی ترافیک همزمان باشند.</p>
+
+                        <h2 class="text-2xl font-black dark:text-white mt-10 mb-4">۲. بهینه‌سازی تصاویر</h2>
+                        <p>تصاویر حجیم دشمن شماره یک سرعت سایت هستند. همیشه قبل از آپلود، تصاویر را فشرده کنید و از فرمت‌های مدرن مثل <strong>WebP</strong> استفاده کنید. افزونه‌هایی مثل Smush یا ShortPixel می‌توانند در این زمینه کمک‌کننده باشند.</p>
+
+                        <blockquote class="my-8">
+                            "سرعت سایت نه تنها یک ویژگی فنی، بلکه بخشی از هویت برند و احترام به زمان کاربر است."
+                        </blockquote>
+
+                        <h2 class="text-2xl font-black dark:text-white mt-10 mb-4">۳. استفاده از کشینگ (Caching)</h2>
+                        <p>فعال‌سازی سیستم کش باعث می‌شود صفحات سایت به صورت ایستا (Static) ذخیره شوند و فشار بر روی سرور به شدت کاهش یابد. افزونه‌های WP Rocket و LiteSpeed Cache از بهترین گزینه‌ها هستند.</p>
+                        
+                        <p>در نهایت، همیشه سایت خود را با ابزارهایی مثل GTmetrix و Google PageSpeed Insights بررسی کنید تا نقاط ضعف را شناسایی و برطرف نمایید.</p>
+                    </article>
+
+                    <!-- Tags & Share -->
+                    <div class="flex flex-wrap items-center justify-between gap-6 py-8 border-t border-slate-200 dark:border-slate-800 mb-16">
+                        <div class="flex gap-2">
+                            <span class="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs">#سئو</span>
+                            <span class="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs">#وردپرس</span>
+                            <span class="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs">#سرعت_سایت</span>
+                        </div>
+                        <div class="flex gap-4">
+                            <button class="w-10 h-10 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition">🔗</button>
+                            <button class="w-10 h-10 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition">X</button>
+                        </div>
+                    </div>
+
+                    <!-- Comments Section -->
+                    <section class="bg-white dark:bg-darkCard p-8 lg:p-12 rounded-[2.5rem] shadow-xl border border-slate-100 dark:border-slate-800">
+                        <h3 class="text-2xl font-black mb-10">نظرات کاربران (۲)</h3>
+                        
+                        <div class="space-y-10">
+                            <!-- Comment 1 -->
+                            <div class="flex gap-4">
+                                <img src="https://picsum.photos/seed/u1/100/100" class="w-12 h-12 rounded-full shrink-0" alt="کاربر">
+                                <div>
+                                    <div class="font-bold mb-1">علی محمدی</div>
+                                    <div class="text-xs text-slate-500 mb-3">۱۰ ساعت پیش</div>
+                                    <p class="text-sm leading-relaxed opacity-80">بسیار مقاله مفیدی بود. من از WP Rocket استفاده کردم و واقعاً تاثیرش عالی بود.</p>
+                                </div>
+                            </div>
+                            <!-- Comment 2 -->
+                            <div class="flex gap-4">
+                                <img src="https://picsum.photos/seed/u2/100/100" class="w-12 h-12 rounded-full shrink-0" alt="کاربر">
+                                <div>
+                                    <div class="font-bold mb-1">سارا راد</div>
+                                    <div class="text-xs text-slate-500 mb-3">۱ روز پیش</div>
+                                    <p class="text-sm leading-relaxed opacity-80">در مورد فرمت WebP سوال داشتم، آیا همه مرورگرها ساپورتش می‌کنن؟</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comment Form -->
+                        <form class="mt-16 space-y-6">
+                            <h4 class="font-bold text-lg mb-4">ارسال نظر جدید</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <input type="text" placeholder="نام شما" class="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 focus:border-primary outline-none transition">
+                                <input type="email" placeholder="ایمیل شما" class="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 focus:border-primary outline-none transition">
+                            </div>
+                            <textarea rows="5" placeholder="پیام شما..." class="w-full px-6 py-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 focus:border-primary outline-none transition"></textarea>
+                            <button type="submit" class="px-10 py-4 bg-primary text-white rounded-2xl font-black shadow-lg shadow-primary/20 hover:scale-105 transition">ارسال نظر</button>
+                        </form>
+                    </section>
+                </div>
+
+                <!-- Sidebar Section -->
+                <aside class="lg:w-1/3 space-y-10">
+                    <!-- Search Widget -->
+                    <div class="p-8 bg-white dark:bg-darkCard rounded-[2rem] shadow-lg border border-slate-100 dark:border-slate-800">
+                        <h4 class="font-black mb-6">جستجو در مقالات</h4>
+                        <div class="relative">
+                            <input type="text" placeholder="کلمه کلیدی..." class="w-full px-5 py-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 outline-none">
+                            <button class="absolute left-3 top-2.5 text-primary">🔍</button>
+                        </div>
+                    </div>
+
+                    <!-- Categories Widget -->
+                    <div class="p-8 bg-white dark:bg-darkCard rounded-[2rem] shadow-lg border border-slate-100 dark:border-slate-800">
+                        <h4 class="font-black mb-6">دسته‌بندی‌ها</h4>
+                        <ul class="space-y-4 text-sm font-medium">
+                            <li class="flex items-center justify-between hover:text-primary transition cursor-pointer">
+                                <span>طراحی سایت</span>
+                                <span class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center">۱۲</span>
+                            </li>
+                            <li class="flex items-center justify-between hover:text-primary transition cursor-pointer">
+                                <span>سئو و بهینه‌سازی</span>
+                                <span class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center">۸</span>
+                            </li>
+                            <li class="flex items-center justify-between hover:text-primary transition cursor-pointer">
+                                <span>هوش مصنوعی</span>
+                                <span class="w-8 h-8 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center">۵</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Recent Posts Widget -->
+                    <div class="p-8 bg-white dark:bg-darkCard rounded-[2rem] shadow-lg border border-slate-100 dark:border-slate-800">
+                        <h4 class="font-black mb-8">مطالب پیشنهادی</h4>
+                        <div class="space-y-6">
+                            <div class="flex gap-4 group cursor-pointer">
+                                <img src="https://picsum.photos/seed/r1/100/100" class="w-16 h-16 rounded-xl object-cover shrink-0" alt="پست">
+                                <div>
+                                    <h5 class="text-xs font-bold leading-relaxed group-hover:text-primary transition line-clamp-2">آینده طراحی وب با هوش مصنوعی در سال ۲۰۲۴</h5>
+                                    <span class="text-[10px] text-slate-500 italic">۱۴ دی ۱۴۰۲</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-4 group cursor-pointer">
+                                <img src="https://picsum.photos/seed/r2/100/100" class="w-16 h-16 rounded-xl object-cover shrink-0" alt="پست">
+                                <div>
+                                    <h5 class="text-xs font-bold leading-relaxed group-hover:text-primary transition line-clamp-2">امنیت در وردپرس: جلوگیری از حملات Brute Force</h5>
+                                    <span class="text-[10px] text-slate-500 italic">۱۰ دی ۱۴۰۲</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Widget -->
+                    <div class="p-10 bg-gradient-to-br from-primary to-primary-dark rounded-[2.5rem] text-white text-center shadow-xl shadow-primary/30 relative overflow-hidden group">
+                        <div class="relative z-10">
+                            <h4 class="text-xl font-black mb-4">نیاز به مشاوره دارید؟</h4>
+                            <p class="text-xs opacity-80 mb-8 leading-relaxed">متخصصین ما آماده پاسخگویی به سوالات شما در حوزه وب هستند.</p>
+                            <a href="#contact" class="inline-block px-8 py-3 bg-white text-primary rounded-xl font-black text-sm hover:scale-105 transition">تماس بگیرید</a>
+                        </div>
+                        <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition duration-1000"></div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 pt-20 pb-10 border-t border-slate-800">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 mb-16 text-right">
+            <div>
+                <div class="text-2xl font-black text-white mb-6">یکان وب</div>
+                <p class="text-sm leading-relaxed">آژانس خلاق یکان وب، پیشرو در ارائه راهکارهای نوین طراحی وب، سئو و هوش مصنوعی در ایران.</p>
+            </div>
+            <div>
+                <h4 class="font-black text-white mb-6">لینک‌های مفید</h4>
+                <ul class="space-y-4 text-sm">
+                    <li><a href="services.html" class="hover:text-primary transition">خدمات ما</a></li>
+                    <li><a href="index.html#portfolio" class="hover:text-primary transition">نمونه‌کارها</a></li>
+                    <li><a href="#" class="hover:text-primary transition text-primary">وبلاگ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-black text-white mb-6">ارتباط با ما</h4>
+                <ul class="space-y-4 text-sm">
+                    <li>📍 تهران، ونک، ملاصدرا</li>
+                    <li class="text-ltr">📞 021-88000000</li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center text-[10px] text-slate-600 font-bold border-t border-slate-800 pt-10">
+            &copy; تمامی حقوق برای آژانس «یکان وب» محفوظ است. ۱۴۰۳
+        </div>
+    </footer>
+
+</body>
+</html>

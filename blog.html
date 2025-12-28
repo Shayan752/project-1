@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وبلاگ | آژانس یکان وب</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Vazirmatn Font CDN -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#4B9DA9',
+                            dark: '#3a7a83',
+                        },
+                        secondary: {
+                            DEFAULT: '#91C6BC',
+                            dark: '#76a89f',
+                        },
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b'
+                    },
+                    fontFamily: {
+                        vazir: ['Vazirmatn', 'sans-serif'],
+                    }
+                }
+            }
+        }
+
+        function themeManager() {
+            return {
+                darkMode: localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
+                mobileMenuOpen: false,
+                currentCategory: 'all',
+                init() {
+                    if (this.darkMode) {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
+                },
+                toggleTheme() {
+                    this.darkMode = !this.darkMode;
+                    if (this.darkMode) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('theme', 'light');
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; }
+        .glass-header { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); }
+        .dark .glass-header { background: rgba(15, 23, 42, 0.85); }
+        .blog-card { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .blog-card:hover { transform: translateY(-8px); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #4B9DA9; border-radius: 10px; }
+    </style>
+</head>
+<body x-data="themeManager()" :class="darkMode ? 'dark' : ''" class="bg-slate-50 dark:bg-darkBg text-slate-800 dark:text-slate-200 transition-colors duration-500 overflow-x-hidden">
+
+    <!-- Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-header border-b border-slate-200 dark:border-slate-800">
+        <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-6">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden text-slate-600 dark:text-slate-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                </button>
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg">
+                        <span class="text-lg font-black">YW</span>
+                    </div>
+                    <span class="text-xl font-black tracking-tight dark:text-white">یکان وب</span>
+                </a>
+            </div>
+
+            <nav class="hidden lg:flex items-center gap-8">
+                <a href="index.html" class="hover:text-primary transition font-bold text-sm">خانه</a>
+                <a href="services.html" class="hover:text-primary transition font-bold text-sm">خدمات</a>
+                <a href="index.html#portfolio" class="hover:text-primary transition font-bold text-sm">نمونه‌کارها</a>
+                <a href="blog-list.html" class="text-primary transition font-black text-sm border-b-2 border-primary pb-1">وبلاگ</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button @click="toggleTheme()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shadow-inner">
+                    <template x-if="!darkMode"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg></template>
+                    <template x-if="darkMode"><svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m3.343-5.657l-.707.707m12.728 12.728l-.707.707M6.343 17.657l-.707-.707M17.657 6.343l-.707-.707M12 7a5 5 0 100 10 5 5 0 000-10z" /></svg></template>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-24">
+        <div class="container mx-auto px-6">
+            
+            <!-- Blog Hero -->
+            <div class="text-center mb-16">
+                <h1 class="text-4xl lg:text-6xl font-black mb-6 dark:text-white">دانشنامه <span class="text-primary">یکان وب</span></h1>
+                <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">آخرین مقالات، آموزش‌ها و اخبار دنیای تکنولوژی، طراحی وب و هوش مصنوعی را در اینجا دنبال کنید.</p>
+            </div>
+
+            <!-- Categories Filter -->
+            <div class="flex flex-wrap justify-center gap-3 mb-16">
+                <button @click="currentCategory = 'all'" :class="currentCategory === 'all' ? 'bg-primary text-white' : 'bg-white dark:bg-darkCard text-slate-500'" class="px-6 py-2 rounded-full font-bold text-sm shadow-sm transition-all">همه مقالات</button>
+                <button @click="currentCategory = 'tech'" :class="currentCategory === 'tech' ? 'bg-primary text-white' : 'bg-white dark:bg-darkCard text-slate-500'" class="px-6 py-2 rounded-full font-bold text-sm shadow-sm transition-all">تکنولوژی</button>
+                <button @click="currentCategory = 'seo'" :class="currentCategory === 'seo' ? 'bg-primary text-white' : 'bg-white dark:bg-darkCard text-slate-500'" class="px-6 py-2 rounded-full font-bold text-sm shadow-sm transition-all">سئو</button>
+                <button @click="currentCategory = 'ai'" :class="currentCategory === 'ai' ? 'bg-primary text-white' : 'bg-white dark:bg-darkCard text-slate-500'" class="px-6 py-2 rounded-full font-bold text-sm shadow-sm transition-all">هوش مصنوعی</button>
+                <button @click="currentCategory = 'design'" :class="currentCategory === 'design' ? 'bg-primary text-white' : 'bg-white dark:bg-darkCard text-slate-500'" class="px-6 py-2 rounded-full font-bold text-sm shadow-sm transition-all">طراحی</button>
+            </div>
+
+            <!-- Featured Post (Optional Highlight) -->
+            <div class="mb-16">
+                <a href="blog-post.html" class="group block relative overflow-hidden rounded-[2.5rem] bg-white dark:bg-darkCard shadow-xl">
+                    <div class="flex flex-col lg:flex-row">
+                        <div class="lg:w-1/2 overflow-hidden">
+                            <img src="https://picsum.photos/seed/featured/800/600" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt="Featured Post">
+                        </div>
+                        <div class="lg:w-1/2 p-10 lg:p-16 flex flex-col justify-center">
+                            <div class="text-primary font-bold text-sm mb-4">مقاله ویژه هفته</div>
+                            <h2 class="text-2xl lg:text-4xl font-black mb-6 group-hover:text-primary transition leading-tight dark:text-white">راهنمای جامع افزایش امنیت وب‌سایت‌های وردپرسی در سال ۲۰۲۴</h2>
+                            <p class="text-slate-500 dark:text-slate-400 mb-8 leading-relaxed line-clamp-3 text-sm">امنیت وب‌سایت شوخی‌بردار نیست. در این مقاله به بررسی ۱۰ تکنیک حیاتی می‌پردازیم که هر مدیر سایتی باید برای جلوگیری از نفوذ هکرها انجام دهد...</p>
+                            <div class="flex items-center justify-between mt-auto">
+                                <div class="flex items-center gap-3">
+                                    <img src="https://picsum.photos/seed/admin/50/50" class="w-10 h-10 rounded-full" alt="نویسنده">
+                                    <span class="text-sm font-bold">تیم تحریریه یکان وب</span>
+                                </div>
+                                <span class="text-xs text-slate-400">۱۶ دی ۱۴۰۲</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Blog Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Blog Post 1 -->
+                <article class="blog-card bg-white dark:bg-darkCard rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800">
+                    <a href="blog-post.html" class="block relative h-56 overflow-hidden">
+                        <img src="https://picsum.photos/seed/b1/600/400" class="w-full h-full object-cover" alt="Post">
+                        <div class="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-[10px] rounded-full font-bold">تکنولوژی</div>
+                    </a>
+                    <div class="p-8">
+                        <div class="flex items-center gap-2 text-[10px] text-slate-400 mb-4">
+                            <span>📅 ۱۴ دی ۱۴۰۲</span>
+                            <span>•</span>
+                            <span>⏱️ ۵ دقیقه مطالعه</span>
+                        </div>
+                        <h3 class="text-xl font-black mb-4 hover:text-primary transition leading-relaxed dark:text-white">
+                            <a href="blog-post.html">چگونه سرعت لود سایت وردپرسی را به زیر یک ثانیه برسانیم؟</a>
+                        </h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 line-clamp-2 leading-relaxed">بررسی راهکارهای عملی و معرفی بهترین افزونه‌های کشینگ برای بهینه‌سازی سرعت وردپرس.</p>
+                        <a href="blog-post.html" class="text-primary font-bold text-xs flex items-center gap-1 group">ادامه مطلب <span class="group-hover:translate-x-[-5px] transition">←</span></a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 2 -->
+                <article class="blog-card bg-white dark:bg-darkCard rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800">
+                    <a href="blog-post.html" class="block relative h-56 overflow-hidden">
+                        <img src="https://picsum.photos/seed/b2/600/400" class="w-full h-full object-cover" alt="Post">
+                        <div class="absolute top-4 right-4 px-3 py-1 bg-secondary text-white text-[10px] rounded-full font-bold">هوش مصنوعی</div>
+                    </a>
+                    <div class="p-8">
+                        <div class="flex items-center gap-2 text-[10px] text-slate-400 mb-4">
+                            <span>📅 ۱۲ دی ۱۴۰۲</span>
+                            <span>•</span>
+                            <span>⏱️ ۷ دقیقه مطالعه</span>
+                        </div>
+                        <h3 class="text-xl font-black mb-4 hover:text-primary transition leading-relaxed dark:text-white">
+                            <a href="blog-post.html">تاثیر هوش مصنوعی بر آینده طراحی تجربه کاربری (UX)</a>
+                        </h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 line-clamp-2 leading-relaxed">هوش مصنوعی چگونه به طراحان در شناخت بهتر رفتار کاربران و شخصی‌سازی رابط‌ها کمک می‌کند؟</p>
+                        <a href="blog-post.html" class="text-primary font-bold text-xs flex items-center gap-1 group">ادامه مطلب <span class="group-hover:translate-x-[-5px] transition">←</span></a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 3 -->
+                <article class="blog-card bg-white dark:bg-darkCard rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800">
+                    <a href="blog-post.html" class="block relative h-56 overflow-hidden">
+                        <img src="https://picsum.photos/seed/b3/600/400" class="w-full h-full object-cover" alt="Post">
+                        <div class="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-[10px] rounded-full font-bold">سئو</div>
+                    </a>
+                    <div class="p-8">
+                        <div class="flex items-center gap-2 text-[10px] text-slate-400 mb-4">
+                            <span>📅 ۱۰ دی ۱۴۰۲</span>
+                            <span>•</span>
+                            <span>⏱️ ۴ دقیقه مطالعه</span>
+                        </div>
+                        <h3 class="text-xl font-black mb-4 hover:text-primary transition leading-relaxed dark:text-white">
+                            <a href="blog-post.html">۵ خطای رایج در سئو که باعث جریمه شدن توسط گوگل می‌شود</a>
+                        </h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 line-clamp-2 leading-relaxed">اشتباهاتی که حتی متخصصین سئو هم ممکن است مرتکب شوند و باعث افت شدید رتبه سایت شود.</p>
+                        <a href="blog-post.html" class="text-primary font-bold text-xs flex items-center gap-1 group">ادامه مطلب <span class="group-hover:translate-x-[-5px] transition">←</span></a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 4 -->
+                <article class="blog-card bg-white dark:bg-darkCard rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800">
+                    <a href="blog-post.html" class="block relative h-56 overflow-hidden">
+                        <img src="https://picsum.photos/seed/b4/600/400" class="w-full h-full object-cover" alt="Post">
+                        <div class="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-[10px] rounded-full font-bold">طراحی</div>
+                    </a>
+                    <div class="p-8">
+                        <div class="flex items-center gap-2 text-[10px] text-slate-400 mb-4">
+                            <span>📅 ۸ دی ۱۴۰۲</span>
+                            <span>•</span>
+                            <span>⏱️ ۶ دقیقه مطالعه</span>
+                        </div>
+                        <h3 class="text-xl font-black mb-4 hover:text-primary transition leading-relaxed dark:text-white">
+                            <a href="blog-post.html">ترندهای طراحی رابط کاربری (UI) برای اپلیکیشن‌ها در سال ۲۰۲۴</a>
+                        </h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 line-clamp-2 leading-relaxed">بررسی سبک‌های مینیمالیسم، بنتو گرید و استفاده از رنگ‌های گرادینت در طراحی جدید.</p>
+                        <a href="blog-post.html" class="text-primary font-bold text-xs flex items-center gap-1 group">ادامه مطلب <span class="group-hover:translate-x-[-5px] transition">←</span></a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 5 -->
+                <article class="blog-card bg-white dark:bg-darkCard rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800">
+                    <a href="blog-post.html" class="block relative h-56 overflow-hidden">
+                        <img src="https://picsum.photos/seed/b5/600/400" class="w-full h-full object-cover" alt="Post">
+                        <div class="absolute top-4 right-4 px-3 py-1 bg-secondary text-white text-[10px] rounded-full font-bold">هوش مصنوعی</div>
+                    </a>
+                    <div class="p-8">
+                        <div class="flex items-center gap-2 text-[10px] text-slate-400 mb-4">
+                            <span>📅 ۵ دی ۱۴۰۲</span>
+                            <span>•</span>
+                            <span>⏱️ ۹ دقیقه مطالعه</span>
+                        </div>
+                        <h3 class="text-xl font-black mb-4 hover:text-primary transition leading-relaxed dark:text-white">
+                            <a href="blog-post.html">چگونه از ChatGPT برای خودکارسازی تولید محتوای وب استفاده کنیم؟</a>
+                        </h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 line-clamp-2 leading-relaxed">راهنمای عملی استفاده از پرامپت‌های مهندسی شده برای نوشتن مقالات با کیفیت.</p>
+                        <a href="blog-post.html" class="text-primary font-bold text-xs flex items-center gap-1 group">ادامه مطلب <span class="group-hover:translate-x-[-5px] transition">←</span></a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 6 -->
+                <article class="blog-card bg-white dark:bg-darkCard rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800">
+                    <a href="blog-post.html" class="block relative h-56 overflow-hidden">
+                        <img src="https://picsum.photos/seed/b6/600/400" class="w-full h-full object-cover" alt="Post">
+                        <div class="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-[10px] rounded-full font-bold">تکنولوژی</div>
+                    </a>
+                    <div class="p-8">
+                        <div class="flex items-center gap-2 text-[10px] text-slate-400 mb-4">
+                            <span>📅 ۲ دی ۱۴۰۲</span>
+                            <span>•</span>
+                            <span>⏱️ ۵ دقیقه مطالعه</span>
+                        </div>
+                        <h3 class="text-xl font-black mb-4 hover:text-primary transition leading-relaxed dark:text-white">
+                            <a href="blog-post.html">مقایسه بهترین فریم‌ورک‌های جاوا اسکریپت در سال ۲۰۲۴: React vs Vue</a>
+                        </h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mb-6 line-clamp-2 leading-relaxed">کدام فریم‌ورک برای توسعه اپلیکیشن‌های تک‌صفحه‌ای (SPA) در پروژه‌های جدید مناسب‌تر است؟</p>
+                        <a href="blog-post.html" class="text-primary font-bold text-xs flex items-center gap-1 group">ادامه مطلب <span class="group-hover:translate-x-[-5px] transition">←</span></a>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-20 flex justify-center items-center gap-2">
+                <button class="w-10 h-10 rounded-xl bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition">←</button>
+                <button class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center font-bold">۱</button>
+                <button class="w-10 h-10 rounded-xl bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition font-bold">۲</button>
+                <button class="w-10 h-10 rounded-xl bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition font-bold">۳</button>
+                <button class="w-10 h-10 rounded-xl bg-white dark:bg-darkCard border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition">→</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 pt-20 pb-10 border-t border-slate-800">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 mb-16 text-right">
+            <div>
+                <div class="text-2xl font-black text-white mb-6">یکان وب</div>
+                <p class="text-sm leading-relaxed">آژانس خلاق یکان وب، پیشرو در ارائه راهکارهای نوین طراحی وب، سئو و هوش مصنوعی در ایران.</p>
+            </div>
+            <div>
+                <h4 class="font-black text-white mb-6">لینک‌های مفید</h4>
+                <ul class="space-y-4 text-sm">
+                    <li><a href="services.html" class="hover:text-primary transition">خدمات ما</a></li>
+                    <li><a href="index.html#portfolio" class="hover:text-primary transition">نمونه‌کارها</a></li>
+                    <li><a href="blog-list.html" class="hover:text-primary transition text-primary">وبلاگ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-black text-white mb-6">ارتباط با ما</h4>
+                <ul class="space-y-4 text-sm">
+                    <li>📍 تهران، ونک، ملاصدرا</li>
+                    <li class="text-ltr">📞 021-88000000</li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center text-[10px] text-slate-600 font-bold border-t border-slate-800 pt-10">
+            &copy; تمامی حقوق برای آژانس «یکان وب» محفوظ است. ۱۴۰۳
+        </div>
+    </footer>
+
+</body>
+</html>

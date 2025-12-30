@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظرات کاربران | کدپلاس</title>
+    
+    <!-- Vazirmatn Font -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.3/dist/font-face.css" rel="stylesheet" type="text/css" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: '#3B9797',
+                            50: '#F0FDFD',
+                            600: '#2E7A7A',
+                            700: '#225C5C',
+                        },
+                        darkBg: '#0F172A',
+                        darkCard: '#1E293B',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        *, ::after, ::before {
+            font-family: 'Vazirmatn', sans-serif !important;
+        }
+        body {
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        .comment-card-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04);
+        }
+        .dark .comment-card-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+        }
+        .avatar-gradient {
+            background: linear-gradient(135deg, #3B9797 0%, #2E7A7A 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-slate-900 dark:bg-darkBg dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- Mobile Drawer -->
+    <div id="drawer-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden opacity-0 transition-opacity duration-300"></div>
+    <aside id="mobile-drawer" class="fixed top-0 right-0 h-full w-80 bg-white dark:bg-darkCard z-[101] translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+        <div class="p-6 border-b dark:border-slate-700 flex items-center justify-between">
+            <span class="text-xl font-bold text-primary">کدپلاس</span>
+            <button onclick="toggleDrawer(false)" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="p-6 space-y-6 flex-1 overflow-y-auto">
+            <nav class="flex flex-col gap-2">
+                <a href="index.html" class="py-3 px-4 rounded-xl hover:bg-primary/10 transition font-medium">خانه</a>
+                <a href="articles.html" class="py-3 px-4 rounded-xl hover:bg-primary/10 transition font-medium">آخرین مقالات</a>
+                <a href="#" class="py-3 px-4 rounded-xl bg-primary/10 text-primary font-bold">گفتگوها</a>
+            </nav>
+        </div>
+    </aside>
+
+    <div id="main-wrapper" class="flex-1 flex flex-col">
+        <!-- Header -->
+        <header class="sticky top-0 z-50 bg-white/90 dark:bg-darkBg/90 backdrop-blur-md border-b dark:border-slate-800">
+            <div class="container mx-auto px-4 lg:px-12 h-20 flex items-center justify-between">
+                <div class="flex items-center gap-10">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/30">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 2v4a2 2 0 002 2h4" /></svg>
+                        </div>
+                        <span class="text-2xl font-black tracking-tighter">کد<span class="text-primary">پلاس</span></span>
+                    </a>
+                    <nav class="hidden lg:flex items-center gap-8 text-slate-600 dark:text-slate-400 font-medium">
+                        <a href="index.html" class="hover:text-primary transition">خانه</a>
+                        <a href="articles.html" class="hover:text-primary transition">بلاگ</a>
+                        <a href="#" class="text-primary font-bold border-b-2 border-primary pb-1">نظرات کاربران</a>
+                    </nav>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle" class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        <svg id="sun-icon" class="hidden w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" /></svg>
+                        <svg id="moon-icon" class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
+                    </button>
+                    <button onclick="toggleDrawer(true)" class="lg:hidden p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Hero -->
+        <section class="py-12 lg:py-16 bg-white dark:bg-darkCard border-b dark:border-slate-800">
+            <div class="container mx-auto px-4 lg:px-12">
+                <div class="max-w-3xl space-y-6">
+                    <span class="bg-primary/10 text-primary text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">جامعه کاربران</span>
+                    <h1 class="text-4xl lg:text-6xl font-black text-slate-900 dark:text-white leading-tight">آخرین گفتگوها و نظرات</h1>
+                    <p class="text-lg text-slate-500 dark:text-slate-400 leading-relaxed">
+                        در این بخش می‌توانید جدیدترین دیدگاه‌های کاربران را در مورد مقالات و آموزش‌ها مشاهده کنید. با ما در گفتگوها همراه شوید.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="py-12 bg-gray-50 dark:bg-darkBg">
+            <div class="container mx-auto px-4 lg:px-12">
+                <div class="flex flex-col lg:flex-row gap-12">
+                    
+                    <!-- Comments Feed -->
+                    <div class="lg:w-2/3 space-y-8">
+                        
+                        <!-- Comment Item 1 -->
+                        <div class="bg-white dark:bg-darkCard p-6 lg:p-8 rounded-[2.5rem] border dark:border-slate-800 comment-card-shadow space-y-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-14 h-14 rounded-2xl avatar-gradient flex items-center justify-center text-white font-black text-xl shadow-lg shadow-primary/20">ر</div>
+                                    <div>
+                                        <h4 class="font-black text-slate-900 dark:text-white">رضا مهدوی</h4>
+                                        <p class="text-xs font-bold text-slate-400">۲ ساعت پیش</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1 text-amber-500">
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <span class="text-xs font-black">کاربر برتر</span>
+                                </div>
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                                واقعاً عالی بود! بخش مربوط به مدیریت وضعیت در Next.js خیلی به من کمک کرد تا ساختار پروژه‌ام رو اصلاح کنم. منتظر آموزش‌های بعدی هستم.
+                            </p>
+                            <div class="pt-4 border-t dark:border-slate-800 flex items-center justify-between">
+                                <a href="post.html" class="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                                    در مقاله: آموزش جامع Next.js 14
+                                </a>
+                                <button class="text-primary font-black text-xs">پاسخ دادن</button>
+                            </div>
+                        </div>
+
+                        <!-- Comment Item 2 -->
+                        <div class="bg-white dark:bg-darkCard p-6 lg:p-8 rounded-[2.5rem] border dark:border-slate-800 comment-card-shadow space-y-6">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-14 h-14 rounded-2xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-400 font-black text-xl">س</div>
+                                    <div>
+                                        <h4 class="font-black text-slate-900 dark:text-white">سارا احمدی</h4>
+                                        <p class="text-xs font-bold text-slate-400">۵ ساعت پیش</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                                یک سوال داشتم، آیا این متد برای پروژه‌های مقیاس بالا هم جواب میده یا بهتره از کتابخونه‌های سنگین‌تر استفاده کنیم؟
+                            </p>
+                            <div class="pt-4 border-t dark:border-slate-800 flex items-center justify-between">
+                                <a href="post.html" class="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                                    در مقاله: مدیریت وضعیت با Zustand
+                                </a>
+                                <button class="text-primary font-black text-xs">پاسخ دادن</button>
+                            </div>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="flex justify-center pt-8">
+                            <nav class="flex items-center gap-2">
+                                <button class="w-10 h-10 rounded-xl bg-primary text-white font-black shadow-lg">۱</button>
+                                <button class="w-10 h-10 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition font-bold">۲</button>
+                                <span class="px-2 text-slate-400">...</span>
+                                <button class="w-10 h-10 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition font-bold flex items-center justify-center">
+                                    <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                </button>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <aside class="lg:w-1/3 space-y-10">
+                        <!-- Top Commenters Widget -->
+                        <div class="bg-white dark:bg-darkCard p-8 rounded-[2rem] comment-card-shadow border dark:border-slate-800 space-y-6">
+                            <h4 class="text-lg font-black border-s-4 border-primary ps-4">فعال‌ترین کاربران</h4>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold">م</div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-black">محمد ایرانی</p>
+                                        <p class="text-[10px] text-slate-400">۱۲۰ دیدگاه</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold">ن</div>
+                                    <div class="flex-1">
+                                        <p class="text-sm font-black">نیما نوری</p>
+                                        <p class="text-[10px] text-slate-400">۸۵ دیدگاه</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Guestbook Link -->
+                        <div class="bg-primary p-8 rounded-[2rem] text-white text-center space-y-4">
+                            <h4 class="text-xl font-black">صدای شما شنیده می‌شود!</h4>
+                            <p class="text-sm opacity-80 leading-relaxed">نظرات و پیشنهادات خود را برای بهبود کیفیت محتوا با ما در میان بگذارید.</p>
+                            <button class="w-full bg-white text-primary py-3 rounded-xl font-black shadow-xl hover:scale-105 transition">ارسال بازخورد مستقیم</button>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white dark:bg-darkCard border-t dark:border-slate-800 pt-10 pb-10">
+            <div class="container mx-auto px-4 lg:px-12 text-center text-slate-400 text-xs font-bold">
+                تمامی حقوق برای مجله کدپلاس محفوظ است - ۱۴۰۳
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript Interactions -->
+    <script>
+        // --- Theme Management ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+            localStorage.setItem('theme-pref', theme);
+        }
+
+        const initialTheme = localStorage.getItem('theme-pref') || 
+                            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        applyTheme(initialTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            applyTheme(isDark ? 'light' : 'dark');
+        });
+
+        // --- Drawer Logic ---
+        const drawer = document.getElementById('mobile-drawer');
+        const overlay = document.getElementById('drawer-overlay');
+
+        function toggleDrawer(isOpen) {
+            if (isOpen) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.add('opacity-100'), 10);
+                drawer.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.classList.remove('opacity-100');
+                drawer.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        overlay.addEventListener('click', () => toggleDrawer(false));
+    </script>
+</body>
+</html>

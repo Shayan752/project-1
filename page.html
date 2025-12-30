@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>یکان وب | عنوان صفحه</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Vazir Font CDN -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    
+    <script>
+        // Tailwind dark mode configuration
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#26CCC2',
+                        secondary: '#6AECE1',
+                    }
+                }
+            }
+        }
+
+        // Initialize theme logic
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #26CCC2, #6AECE1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .bg-primary-gradient {
+            background: linear-gradient(135deg, #26CCC2 0%, #1ea8a0 100%);
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        .dark .glass-nav {
+            background: rgba(15, 23, 42, 0.85);
+            border-color: rgba(30, 41, 59, 1);
+        }
+        .mobile-menu-overlay {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+        }
+        .dark .mobile-menu-overlay {
+            background: rgba(15, 23, 42, 0.98);
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-nav border-b border-slate-100 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Right Side: Logo & Hamburger -->
+                <div class="flex items-center gap-4">
+                    <!-- Hamburger Menu Button -->
+                    <button id="mobile-menu-button" class="md:hidden p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all hover:bg-[#26CCC2] hover:text-white">
+                        <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        <svg id="close-icon" class="hidden w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+
+                    <a href="index.html" class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-primary-gradient rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-[#26CCC2]/20">ی</div>
+                        <span class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">یکان<span class="text-[#26CCC2]">وب</span></span>
+                    </a>
+                </div>
+                
+                <!-- Center: Desktop Links -->
+                <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-400">
+                    <a href="index.html#services-overview" class="hover:text-[#26CCC2] transition-colors">خدمات</a>
+                    <a href="index.html#why-us" class="hover:text-[#26CCC2] transition-colors">چرا ما؟</a>
+                    <a href="archive.html" class="hover:text-[#26CCC2] transition-colors">بلاگ</a>
+                    <a href="#" class="hover:text-[#26CCC2] transition-colors">درباره ما</a>
+                </div>
+
+                <!-- Left Side: Theme & CTA -->
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle" type="button" class="text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-sm p-2.5 transition-all">
+                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                    </button>
+                    <a href="#contact" class="hidden sm:block bg-primary-gradient text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-md hover:shadow-lg transition-all">مشاوره رایگان</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 hidden mobile-menu-overlay transition-all duration-300">
+        <div class="flex flex-col items-center justify-center h-full space-y-8 text-2xl font-black">
+            <a href="index.html#services-overview" class="mobile-link text-slate-900 dark:text-white">خدمات</a>
+            <a href="index.html#why-us" class="mobile-link text-slate-900 dark:text-white">چرا ما؟</a>
+            <a href="archive.html" class="mobile-link text-slate-900 dark:text-white">بلاگ</a>
+            <a href="#" class="mobile-link text-slate-900 dark:text-white">درباره ما</a>
+            <a href="#contact" class="mobile-link bg-primary-gradient text-white px-10 py-4 rounded-2xl text-lg font-bold">درخواست مشاوره</a>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <header class="pt-40 pb-16 bg-slate-50 dark:bg-slate-950 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav class="flex mb-4 text-xs font-bold text-slate-400 uppercase tracking-widest gap-2">
+                <a href="index.html" class="hover:text-[#26CCC2]">خانه</a>
+                <span>/</span>
+                <span class="text-[#26CCC2]">عنوان صفحه</span>
+            </nav>
+            <h1 class="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight">
+                عنوان نمونه برای <span class="gradient-text">صفحات داخلی</span>
+            </h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow py-16 bg-white dark:bg-slate-900 transition-colors">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="prose prose-slate dark:prose-invert max-w-none">
+                <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
+                    این یک نمونه از متن در صفحه داخلی آژانس یکان وب است. ما در این بخش از بهترین استانداردهای خوانایی برای متون فارسی استفاده کرده‌ایم. تمامی المان‌ها به گونه‌ای طراحی شده‌اند که تجربه کاربری لذت‌بخشی را در هر دو حالت روشن و تاریک فراهم کنند.
+                </p>
+
+                <div class="rounded-3xl overflow-hidden mb-12 shadow-xl border border-slate-100 dark:border-slate-800 aspect-video bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                    <span class="text-slate-300 dark:text-slate-600 font-bold text-xl"></span>
+                </div>
+
+                <h2 class="text-2xl font-black text-slate-900 dark:text-white mb-6">هدف ما از ایجاد این بخش</h2>
+                <p class="mb-6 leading-relaxed">
+                    لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.
+                </p>
+
+                <ul class="space-y-4 mb-10 text-slate-600 dark:text-slate-400">
+                    <li class="flex items-start gap-3">
+                        <span class="mt-1.5 w-2 h-2 rounded-full bg-[#26CCC2] flex-shrink-0"></span>
+                        <span>تمرکز بر کیفیت و جزئیات در تمامی پروژه‌ها</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="mt-1.5 w-2 h-2 rounded-full bg-[#26CCC2] flex-shrink-0"></span>
+                        <span>ارائه راهکارهای هوشمند و اتوماتیک برای کسب‌وکارها</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="mt-1.5 w-2 h-2 rounded-full bg-[#26CCC2] flex-shrink-0"></span>
+                        <span>پشتیبانی مداوم و تضمین پایداری سیستم‌ها</span>
+                    </li>
+                </ul>
+
+                <div class="bg-slate-50 dark:bg-slate-800/50 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 mb-10 transition-colors">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">یک نکته مهم</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 italic">
+                        "موفقیت در دنیای دیجیتال تنها با داشتن یک وب‌سایت ساده حاصل نمی‌شود؛ بلکه نیاز به استراتژی دقیق و ابزارهای هوشمند دارد."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Simple Contact CTA -->
+    <section class="py-16 bg-slate-50 dark:bg-slate-950 transition-colors">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-2xl font-black mb-6">سوالی دارید؟ ما پاسخگو هستیم</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-10">اگر در مورد خدمات ما یا نحوه شروع همکاری سوالی دارید، تیم پشتیبانی ما آماده راهنمایی شماست.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="tel:02112345678" class="bg-primary-gradient text-white px-8 py-3 rounded-2xl font-bold shadow-lg">تماس با ما</a>
+                <a href="index.html#contact" class="bg-white dark:bg-slate-800 text-slate-700 dark:text-white border border-slate-200 dark:border-slate-700 px-8 py-3 rounded-2xl font-bold">درخواست مشاوره</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 text-center transition-colors">
+        <p class="text-slate-400 text-xs font-medium italic">© ۲۰۲۴ یکان وب. تمامی حقوق محفوظ است.</p>
+    </footer>
+
+    <script>
+        // --- Mobile Menu Toggle ---
+        const menuBtn = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const hamburgerIcon = document.getElementById('hamburger-icon');
+        const closeIcon = document.getElementById('close-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+            hamburgerIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+            document.body.classList.toggle('overflow-hidden');
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // --- Theme Toggle Logic ---
+        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+
+        var themeToggleBtn = document.getElementById('theme-toggle');
+
+        themeToggleBtn.addEventListener('click', function() {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

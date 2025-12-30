@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتایج جستجو | کدپلاس</title>
+    
+    <!-- Vazirmatn Font -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.3/dist/font-face.css" rel="stylesheet" type="text/css" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: '#3B9797',
+                            50: '#F0FDFD',
+                            600: '#2E7A7A',
+                            700: '#225C5C',
+                        },
+                        darkBg: '#0F172A',
+                        darkCard: '#1E293B',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        *, ::after, ::before {
+            font-family: 'Vazirmatn', sans-serif !important;
+        }
+        body {
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        .blog-card-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04);
+        }
+        .dark .blog-card-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-slate-900 dark:bg-darkBg dark:text-slate-100 transition-colors duration-300">
+
+    <!-- Mobile Drawer -->
+    <div id="drawer-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden opacity-0 transition-opacity duration-300"></div>
+    <aside id="mobile-drawer" class="fixed top-0 right-0 h-full w-80 bg-white dark:bg-darkCard z-[101] translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+        <div class="p-6 border-b dark:border-slate-700 flex items-center justify-between">
+            <span class="text-xl font-bold text-primary">کدپلاس</span>
+            <button onclick="toggleDrawer(false)" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="p-6 space-y-6 flex-1 overflow-y-auto">
+             <!-- Mobile Search -->
+             <div class="relative">
+                <input type="text" value="ری‌اکت" class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl py-3 px-4 pe-12 text-sm focus:ring-2 focus:ring-primary outline-none text-slate-900 dark:text-white">
+                <div class="absolute inset-y-0 left-0 ps-3 flex items-center pointer-events-none text-slate-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </div>
+            </div>
+            <nav class="flex flex-col gap-2">
+                <a href="index.html" class="py-3 px-4 rounded-xl hover:bg-primary/10 transition font-medium">خانه</a>
+                <a href="articles.html" class="py-3 px-4 rounded-xl hover:bg-primary/10 transition font-medium">آخرین مقالات</a>
+                <a href="#" class="py-3 px-4 rounded-xl hover:bg-primary/10 transition font-medium">آموزش‌ها</a>
+            </nav>
+        </div>
+    </aside>
+
+    <div id="main-wrapper">
+        <!-- Header -->
+        <header class="sticky top-0 z-50 bg-white/90 dark:bg-darkBg/90 backdrop-blur-md border-b dark:border-slate-800">
+            <div class="container mx-auto px-4 lg:px-12 h-20 flex items-center justify-between">
+                <div class="flex items-center gap-10">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/30">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 2v4a2 2 0 002 2h4" /></svg>
+                        </div>
+                        <span class="text-2xl font-black tracking-tighter">کد<span class="text-primary">پلاس</span></span>
+                    </a>
+                    <nav class="hidden lg:flex items-center gap-8 text-slate-600 dark:text-slate-400 font-medium">
+                        <a href="index.html" class="hover:text-primary transition">خانه</a>
+                        <a href="articles.html" class="hover:text-primary transition">بلاگ</a>
+                        <a href="#" class="text-primary font-bold">جستجو</a>
+                    </nav>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <!-- Desktop Search (Active) -->
+                    <div class="hidden lg:block relative group">
+                        <input type="text" value="ری‌اکت" class="bg-slate-100 dark:bg-slate-800 border-none rounded-xl py-2.5 px-4 ps-10 text-sm focus:ring-2 focus:ring-primary w-64 transition-all duration-300 outline-none text-slate-900 dark:text-white">
+                        <div class="absolute inset-y-0 left-0 ps-3 flex items-center pointer-events-none text-primary">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        </div>
+                    </div>
+
+                    <button id="theme-toggle" class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        <svg id="sun-icon" class="hidden w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" /></svg>
+                        <svg id="moon-icon" class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
+                    </button>
+                    <button onclick="toggleDrawer(true)" class="lg:hidden p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Search Results Header -->
+        <section class="py-12 lg:py-20 bg-white dark:bg-darkCard border-b dark:border-slate-800">
+            <div class="container mx-auto px-4 lg:px-12 text-center">
+                <div class="max-w-2xl mx-auto space-y-6">
+                    <p class="text-xs font-black text-primary uppercase tracking-widest">نتایج جستجو برای</p>
+                    <h1 class="text-4xl lg:text-6xl font-black text-slate-900 dark:text-white">«ری‌اکت»</h1>
+                    <div class="flex items-center justify-center gap-4 pt-4">
+                        <span class="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-2xl text-xs font-bold text-slate-500">۸ مطلب یافت شد</span>
+                        <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                        <span class="text-xs font-bold text-slate-400">زمان جستجو: ۰.۰۴ ثانیه</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content: Results & Filters -->
+        <section class="py-12">
+            <div class="container mx-auto px-4 lg:px-12">
+                
+                <!-- Secondary Filter Bar -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+                    <div class="flex gap-2">
+                        <button class="px-6 py-2 bg-primary text-white text-xs font-bold rounded-xl shadow-lg shadow-primary/20">همه موارد</button>
+                        <button class="px-6 py-2 bg-white dark:bg-darkCard border dark:border-slate-800 text-xs font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition">فقط مقالات</button>
+                        <button class="px-6 py-2 bg-white dark:bg-darkCard border dark:border-slate-800 text-xs font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition">فقط دوره‌ها</button>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-xs font-bold text-slate-400">ترتیب نمایش:</span>
+                        <select class="bg-white dark:bg-darkCard border dark:border-slate-800 rounded-xl px-4 py-2 text-xs font-bold outline-none">
+                            <option>مرتبط‌ترین</option>
+                            <option>جدیدترین</option>
+                            <option>پر‌بازدیدترین</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Results Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Result Card 1 -->
+                    <article class="bg-white dark:bg-darkCard rounded-[2.5rem] border dark:border-slate-800 overflow-hidden blog-card-shadow group hover:-translate-y-2 transition-all">
+                        <div class="h-48 bg-gradient-to-br from-blue-500 to-primary flex items-center justify-center text-white/20">
+                            <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        </div>
+                        <div class="p-8 space-y-4">
+                            <div class="flex items-center justify-between text-[10px] font-black uppercase text-slate-400">
+                                <span class="text-primary">فرانت‌اند</span>
+                                <span>۱۵ خرداد ۱۴۰۳</span>
+                            </div>
+                            <h3 class="text-xl font-black leading-snug hover:text-primary transition cursor-pointer">هوک‌های سفارشی در <mark class="bg-primary/20 text-primary px-1 rounded">ری‌اکت</mark> (Custom Hooks)</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed line-clamp-2">در این مقاله یاد می‌گیریم چطور منطق تکراری کامپوننت‌ها را در قالب هوک‌های شخصی‌سازی شده کپسوله کنیم.</p>
+                            <div class="pt-4 border-t dark:border-slate-800 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full bg-slate-200"></div>
+                                    <span class="text-[10px] font-bold">حسین مهدوی</span>
+                                </div>
+                                <a href="post.html" class="text-primary font-black text-xs">مشاهده نتیجه</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Result Card 2 -->
+                    <article class="bg-white dark:bg-darkCard rounded-[2.5rem] border dark:border-slate-800 overflow-hidden blog-card-shadow group hover:-translate-y-2 transition-all">
+                        <div class="h-48 bg-gradient-to-br from-indigo-500 to-blue-700 flex items-center justify-center text-white/20">
+                            <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <div class="p-8 space-y-4">
+                            <div class="flex items-center justify-between text-[10px] font-black uppercase text-slate-400">
+                                <span class="text-primary">آموزش</span>
+                                <span>۱۰ خرداد ۱۴۰۳</span>
+                            </div>
+                            <h3 class="text-xl font-black leading-snug hover:text-primary transition cursor-pointer">دوره رایگان آموزش <mark class="bg-primary/20 text-primary px-1 rounded">ری‌اکت</mark> مقدماتی</h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed line-clamp-2">شروع یادگیری محبوب‌ترین کتابخانه جاوااسکریپت از صفر مطلق به همراه پروژه‌های عملی.</p>
+                            <div class="pt-4 border-t dark:border-slate-800 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full bg-slate-200"></div>
+                                    <span class="text-[10px] font-bold">آکادمی کدپلاس</span>
+                                </div>
+                                <span class="bg-green-500/10 text-green-500 px-2 py-0.5 rounded text-[10px] font-bold">دوره آموزشی</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Result Card 3 -->
+                    <article class="bg-white dark:bg-darkCard rounded-[2.5rem] border dark:border-slate-800 overflow-hidden blog-card-shadow group hover:-translate-y-2 transition-all">
+                        <div class="h-48 bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-white/20">
+                            <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M21 16.5C21 16.88 20.79 17.21 20.47 17.38L12.57 21.82C12.41 21.94 12.21 22 12 22C11.79 22 11.59 21.94 11.43 21.82L3.53 17.38C3.21 17.21 3 16.88 3 16.5V7.5C3 7.12 3.21 6.79 3.53 6.62L11.43 2.18C11.59 2.06 11.79 2 12 2C12.21 2 12.41 2.06 12.57 2.18L20.47 6.62C20.79 6.79 21 7.12 21 7.5V16.5Z"/></svg>
+                        </div>
+                        <div class="p-8 space-y-4">
+                            <div class="flex items-center justify-between text-[10px] font-black uppercase text-slate-400">
+                                <span class="text-primary">بک‌اند</span>
+                                <span>۵ خرداد ۱۴۰۳</span>
+                            </div>
+                            <h3 class="text-xl font-black leading-snug hover:text-primary transition cursor-pointer">پیاده‌سازی SSR با Next.js برای اپلیکیشن‌های <mark class="bg-primary/20 text-primary px-1 rounded">ری‌اکت</mark></h3>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed line-clamp-2">چگونه سئو و سرعت لود سایت خود را با استفاده از رندرینگ سمت سرور بهبود دهیم؟</p>
+                            <div class="pt-4 border-t dark:border-slate-800 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full bg-slate-200"></div>
+                                    <span class="text-[10px] font-bold">نیما نوری</span>
+                                </div>
+                                <a href="post.html" class="text-primary font-black text-xs">مشاهده نتیجه</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Empty State Example (Hidden/Optional) -->
+                <!-- 
+                <div class="py-24 text-center space-y-6">
+                    <div class="w-32 h-32 bg-slate-100 dark:bg-slate-800 rounded-full mx-auto flex items-center justify-center text-slate-300">
+                        <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </div>
+                    <h3 class="text-2xl font-black">موردی یافت نشد!</h3>
+                    <p class="text-slate-500">متأسفانه برای عبارت جستجو شده، مطلبی پیدا نکردیم. دوباره تلاش کنید.</p>
+                </div> 
+                -->
+
+                <!-- Pagination -->
+                <div class="flex justify-center mt-20">
+                    <nav class="flex items-center gap-3">
+                        <button class="w-10 h-10 rounded-xl bg-primary text-white font-black shadow-lg">۱</button>
+                        <button class="w-10 h-10 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition font-bold">۲</button>
+                        <button class="w-10 h-10 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition font-bold flex items-center justify-center">
+                            <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-white dark:bg-darkCard border-t dark:border-slate-800 pt-20 pb-10 mt-12">
+            <div class="container mx-auto px-4 lg:px-12 text-center">
+                <div class="mb-8">
+                    <span class="text-2xl font-black">کد<span class="text-primary">پلاس</span></span>
+                </div>
+                <p class="text-slate-400 text-xs font-bold">
+                    تمامی حقوق برای مجله کدپلاس محفوظ است - ۱۴۰۳
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript Interactions -->
+    <script>
+        // --- Theme Management ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+            localStorage.setItem('theme-pref', theme);
+        }
+
+        const initialTheme = localStorage.getItem('theme-pref') || 
+                            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        applyTheme(initialTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            applyTheme(isDark ? 'light' : 'dark');
+        });
+
+        // --- Drawer Logic ---
+        const drawer = document.getElementById('mobile-drawer');
+        const overlay = document.getElementById('drawer-overlay');
+
+        function toggleDrawer(isOpen) {
+            if (isOpen) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.add('opacity-100'), 10);
+                drawer.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.classList.remove('opacity-100');
+                drawer.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        overlay.addEventListener('click', () => toggleDrawer(false));
+    </script>
+</body>
+</html>

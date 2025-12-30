@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدیریت وضعیت در ری‌اکت | کدپلاس</title>
+    
+    <!-- Vazirmatn Font -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.3/dist/font-face.css" rel="stylesheet" type="text/css" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: '#3B9797',
+                            50: '#F0FDFD',
+                            600: '#2E7A7A',
+                            700: '#225C5C',
+                        },
+                        darkBg: '#0F172A',
+                        darkCard: '#1E293B',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        *, ::after, ::before {
+            font-family: 'Vazirmatn', sans-serif !important;
+        }
+        body {
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        .prose-content p {
+            @apply mb-6 text-lg leading-relaxed text-slate-700 dark:text-slate-300;
+        }
+        .prose-content h2 {
+            @apply text-2xl font-black mb-6 mt-12 text-slate-900 dark:text-white flex items-center gap-3;
+        }
+        .prose-content h2::before {
+            content: '';
+            @apply w-2 h-8 bg-primary rounded-full;
+        }
+        .code-block {
+            @apply bg-slate-900 text-slate-300 p-6 rounded-2xl my-8 font-mono text-sm dir-ltr overflow-x-auto border border-slate-800;
+        }
+        .blog-card-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04);
+        }
+        .dark .blog-card-shadow {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-slate-900 dark:bg-darkBg dark:text-slate-100 transition-colors duration-300">
+
+    <!-- Mobile Drawer -->
+    <div id="drawer-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden opacity-0 transition-opacity duration-300"></div>
+    <aside id="mobile-drawer" class="fixed top-0 right-0 h-full w-80 bg-white dark:bg-darkCard z-[101] translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+        <div class="p-6 border-b dark:border-slate-700 flex items-center justify-between">
+            <span class="text-xl font-bold text-primary">کدپلاس</span>
+            <button onclick="toggleDrawer(false)" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div class="p-6 space-y-6 flex-1 overflow-y-auto">
+            <nav class="flex flex-col gap-2">
+                <a href="index.html" class="py-3 px-4 rounded-xl hover:bg-primary/10 hover:text-primary transition font-medium">خانه</a>
+                <a href="articles.html" class="py-3 px-4 rounded-xl hover:bg-primary/10 hover:text-primary transition font-medium">آخرین مقالات</a>
+                <a href="#" class="py-3 px-4 rounded-xl hover:bg-primary/10 hover:text-primary transition font-medium">آموزش‌ها</a>
+                <a href="#" class="py-3 px-4 rounded-xl hover:bg-primary/10 hover:text-primary transition font-medium">تماس با ما</a>
+            </nav>
+        </div>
+    </aside>
+
+    <div id="main-wrapper">
+        <!-- Header -->
+        <header class="sticky top-0 z-50 bg-white/90 dark:bg-darkBg/90 backdrop-blur-md border-b dark:border-slate-800">
+            <div class="container mx-auto px-4 lg:px-12 h-20 flex items-center justify-between">
+                <div class="flex items-center gap-10">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/30">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 2v4a2 2 0 002 2h4" /></svg>
+                        </div>
+                        <span class="text-2xl font-black tracking-tighter">کد<span class="text-primary">پلاس</span></span>
+                    </a>
+                    <nav class="hidden lg:flex items-center gap-8 text-slate-600 dark:text-slate-400 font-medium">
+                        <a href="index.html" class="hover:text-primary transition">خانه</a>
+                        <a href="articles.html" class="hover:text-primary transition">بلاگ</a>
+                        <a href="#" class="hover:text-primary transition text-primary font-bold underline underline-offset-8">مشاهده مقاله</a>
+                    </nav>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle" class="p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                        <svg id="sun-icon" class="hidden w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" /></svg>
+                        <svg id="moon-icon" class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
+                    </button>
+                    <button onclick="toggleDrawer(true)" class="lg:hidden p-2.5 rounded-2xl bg-slate-100 dark:bg-slate-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Article Header Section -->
+        <section class="py-12 lg:py-20">
+            <div class="container mx-auto px-4 lg:px-12">
+                <div class="max-w-4xl mx-auto space-y-8">
+                    <!-- Breadcrumbs -->
+                    <nav class="flex items-center gap-2 text-xs font-bold text-slate-400">
+                        <a href="index.html" class="hover:text-primary transition">خانه</a>
+                        <span>/</span>
+                        <a href="articles.html" class="hover:text-primary transition">برنامه‌نویسی</a>
+                        <span>/</span>
+                        <span class="text-primary">مدیریت وضعیت</span>
+                    </nav>
+
+                    <h1 class="text-3xl lg:text-5xl font-black leading-tight text-slate-900 dark:text-white">
+                        راهنمای جامع مدیریت وضعیت (State Management) در ری‌اکت برای سال ۲۰۲۴
+                    </h1>
+
+                    <div class="flex flex-wrap items-center gap-6 py-4 border-y dark:border-slate-800 text-sm font-bold text-slate-500">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white shadow-lg">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08c-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                            </div>
+                            <span>توسط امیرمحمد هاشمی</span>
+                        </div>
+                        <span class="flex items-center gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> ۲۰ خرداد ۱۴۰۳</span>
+                        <span class="flex items-center gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> زمان مطالعه: ۱۵ دقیقه</span>
+                    </div>
+
+                    <!-- Featured Image Placeholder -->
+                    <div class="w-full aspect-video rounded-[3rem] bg-gradient-to-br from-slate-200 to-slate-100 dark:from-slate-800 dark:to-slate-900 border dark:border-slate-800 overflow-hidden relative">
+                         <div class="absolute inset-0 flex items-center justify-center">
+                            <svg class="w-32 h-32 text-primary opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+                         </div>
+                         <div class="absolute bottom-6 right-6 bg-black/40 backdrop-blur-md text-white text-[10px] px-3 py-1 rounded-full">تصویر شاخص مقاله</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Article Content & Sidebar -->
+        <section class="pb-24">
+            <div class="container mx-auto px-4 lg:px-12">
+                <div class="flex flex-col lg:flex-row gap-16">
+                    
+                    <!-- Main Content -->
+                    <main class="lg:w-2/3">
+                        <article class="prose-content">
+                            <p>
+                                مدیریت وضعیت یا همان State Management همواره یکی از چالش‌های اصلی توسعه‌دهندگان در اکوسیستم ری‌اکت بوده است. از زمان معرفی ری‌اکت، ابزارهای مختلفی برای حل این چالش معرفی شده‌اند؛ از Redux کلاسیک گرفته تا Context API و کتابخانه‌های مدرنی مثل Zustand و Recoil.
+                            </p>
+                            
+                            <h2>چرا به مدیریت وضعیت نیاز داریم؟</h2>
+                            <p>
+                                زمانی که اپلیکیشن شما بزرگ می‌شود، انتقال داده‌ها بین کامپوننت‌های مختلف از طریق Props به کاری طاقت‌فرسا تبدیل می‌شود که به آن Prop Drilling می‌گویند. برای جلوگیری از این موضوع، ما به یک «منبع واحد حقیقت» (Single Source of Truth) نیاز داریم تا داده‌ها را در سطح کل اپلیکیشن مدیریت کنیم.
+                            </p>
+
+                            <div class="code-block">
+                                <pre>// Example of a simple store in Zustand
+import { create } from 'zustand'
+
+const useStore = create((set) => ({
+  count: 0,
+  increase: () => set((state) => ({ count: state.count + 1 })),
+  remove: () => set({ count: 0 }),
+}))</pre>
+                            </div>
+
+                            <h2>مقایسه Context API و Zustand</h2>
+                            <p>
+                                بسیاری از توسعه‌دهندگان فکر می‌کنند Context API یک ابزار مدیریت وضعیت است، اما در حقیقت Context یک ابزار برای انتقال داده است. در مقابل، کتابخانه‌ای مثل Zustand بهینه‌سازی‌های عملکردی (Performance) فوق‌العاده‌ای دارد که از رندرهای مجدد غیرضروری جلوگیری می‌کند.
+                            </p>
+
+                            <blockquote class="my-8 border-s-4 border-primary ps-6 italic text-slate-500 dark:text-slate-400 text-xl font-medium">
+                                "همیشه ابزاری را انتخاب کنید که پیچیدگی اپلیکیشن شما را کمتر کند، نه اینکه صرفاً چون ترند است از آن استفاده کنید."
+                            </blockquote>
+
+                            <p>
+                                در نهایت، انتخاب ابزار مناسب بستگی به مقیاس پروژه شما دارد. برای پروژه‌های کوچک Context API کافی است، اما برای پروژه‌های متوسط و بزرگ، Zustand یا Redux Toolkit گزینه‌های بهتری هستند.
+                            </p>
+                        </article>
+
+                        <!-- Social Share -->
+                        <div class="mt-16 pt-8 border-t dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm font-black">اشتراک‌گذاری:</span>
+                                <div class="flex gap-2">
+                                    <button class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></button>
+                                    <button class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-primary hover:text-white transition"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></button>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-bold">#React</span>
+                                <span class="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-bold">#JavaScript</span>
+                                <span class="px-4 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-bold">#Frontend</span>
+                            </div>
+                        </div>
+
+                        <!-- Comments Section -->
+                        <div class="mt-24 space-y-12">
+                            <h3 class="text-3xl font-black">نظرات کاربران (۳)</h3>
+                            
+                            <!-- Comment Form -->
+                            <div class="bg-white dark:bg-darkCard p-8 rounded-[2.5rem] border dark:border-slate-800 blog-card-shadow">
+                                <form class="space-y-6">
+                                    <div class="grid md:grid-cols-2 gap-6">
+                                        <input type="text" placeholder="نام و نام خانوادگی" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl py-4 px-6 outline-none focus:ring-2 focus:ring-primary/20 transition-all">
+                                        <input type="email" placeholder="آدرس ایمیل" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl py-4 px-6 outline-none focus:ring-2 focus:ring-primary/20 transition-all">
+                                    </div>
+                                    <textarea placeholder="متن نظر خود را اینجا بنویسید..." rows="5" class="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-xl py-4 px-6 outline-none focus:ring-2 focus:ring-primary/20 transition-all"></textarea>
+                                    <button class="bg-primary text-white px-10 py-4 rounded-2xl font-black shadow-lg shadow-primary/20 hover:bg-primary-600 transition">ثبت نظر</button>
+                                </form>
+                            </div>
+
+                            <!-- Comments List -->
+                            <div class="space-y-8">
+                                <div class="flex gap-6">
+                                    <div class="w-14 h-14 rounded-2xl bg-slate-200 shrink-0"></div>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center gap-4">
+                                            <span class="font-black">مهدی حسینی</span>
+                                            <span class="text-[10px] text-slate-400 font-bold">۲ ساعت پیش</span>
+                                        </div>
+                                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                                            واقعاً مقاله کاملی بود. من تا الان از Redux استفاده می‌کردم ولی با خوندن این مقاله ترغیب شدم Zustand رو هم امتحان کنم.
+                                        </p>
+                                        <button class="text-xs font-black text-primary">پاسخ دادن</button>
+                                    </div>
+                                </div>
+                                <div class="flex gap-6 me-12 md:me-20">
+                                    <div class="w-14 h-14 rounded-2xl bg-primary/20 shrink-0 flex items-center justify-center text-primary font-bold">A</div>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center gap-4">
+                                            <span class="font-black text-primary">نویسنده (امیرمحمد)</span>
+                                            <span class="text-[10px] text-slate-400 font-bold">۱ ساعت پیش</span>
+                                        </div>
+                                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                                            سلام مهدی عزیز. حتماً امتحانش کن، برای اکثر پروژه‌ها واقعاً ساده‌تر و بهینه‌تره.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+
+                    <!-- Sidebar -->
+                    <aside class="lg:w-1/3 space-y-10">
+                        <!-- Author Card -->
+                        <div class="bg-white dark:bg-darkCard p-8 rounded-[2rem] blog-card-shadow border dark:border-slate-800 text-center space-y-6">
+                            <div class="w-24 h-24 rounded-[2rem] bg-primary mx-auto shadow-xl shadow-primary/20"></div>
+                            <div class="space-y-2">
+                                <h4 class="text-xl font-black">امیرمحمد هاشمی</h4>
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Senior Frontend Developer</p>
+                            </div>
+                            <p class="text-sm text-slate-500 leading-relaxed">عاشق دنیای جاوااسکریپت و ری‌اکت. اینجا می‌نویسم تا با هم دنیای وب رو جای بهتری کنیم.</p>
+                            <div class="flex justify-center gap-4">
+                                <a href="#" class="text-slate-400 hover:text-primary transition"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.419 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.341-3.369-1.341-.454-1.152-1.11-1.459-1.11-1.459-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12c0-5.523-4.477-10-10-10z"/></svg></a>
+                                <a href="#" class="text-slate-400 hover:text-primary transition"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
+                            </div>
+                        </div>
+
+                        <!-- Sticky Table of Contents -->
+                        <div class="sticky top-28 bg-white dark:bg-darkCard p-8 rounded-[2rem] blog-card-shadow border dark:border-slate-800 space-y-6">
+                            <h4 class="text-lg font-black border-s-4 border-primary ps-4">فهرست محتوا</h4>
+                            <ul class="space-y-4 text-sm font-bold text-slate-500">
+                                <li><a href="#" class="hover:text-primary transition text-primary">مدیریت وضعیت چیست؟</a></li>
+                                <li><a href="#" class="hover:text-primary transition">چرا به ابزار نیاز داریم؟</a></li>
+                                <li><a href="#" class="hover:text-primary transition">بررسی Context API</a></li>
+                                <li><a href="#" class="hover:text-primary transition">معرفی Zustand</a></li>
+                                <li><a href="#" class="hover:text-primary transition">جمع‌بندی و نتیجه‌گیری</a></li>
+                            </ul>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-white dark:bg-darkCard border-t dark:border-slate-800 pt-20 pb-10">
+            <div class="container mx-auto px-4 lg:px-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-12">
+                    <div class="space-y-6">
+                        <span class="text-2xl font-black">کد<span class="text-primary">پلاس</span></span>
+                        <p class="text-slate-500 text-sm leading-relaxed font-bold">مرجع تخصصی آموزش برنامه‌نویسی برای فارسی‌زبانان.</p>
+                    </div>
+                </div>
+                <div class="pt-8 border-t dark:border-slate-800 text-center text-slate-400 text-xs font-bold">
+                    © تمامی حقوق برای مجله کدپلاس محفوظ است - ۱۴۰۳
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript Interactions -->
+    <script>
+        // --- Theme Management ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+            localStorage.setItem('theme-pref', theme);
+        }
+
+        const initialTheme = localStorage.getItem('theme-pref') || 
+                            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        applyTheme(initialTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            applyTheme(isDark ? 'light' : 'dark');
+        });
+
+        // --- Drawer Logic ---
+        const drawer = document.getElementById('mobile-drawer');
+        const overlay = document.getElementById('drawer-overlay');
+
+        function toggleDrawer(isOpen) {
+            if (isOpen) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.add('opacity-100'), 10);
+                drawer.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.classList.remove('opacity-100');
+                drawer.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+                setTimeout(() => overlay.classList.add('hidden'), 300);
+            }
+        }
+
+        overlay.addEventListener('click', () => toggleDrawer(false));
+    </script>
+</body>
+</html>
